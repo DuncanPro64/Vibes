@@ -1,0 +1,186 @@
+{% load static %}
+{% load groupper %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<!-- <link rel="icon" href="{% static 'business/img/vibes.jpg' %}" type="image/jpg"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	 
+	 <link rel="stylesheet" href="E:/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+
+	 
+	 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+		<!-- <link rel="stylesheet" href="{% static 'groups/group.css' %}"> -->
+		<link rel="stylesheet" href="../../static/groups/group.css">
+		<meta lang="en" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+		<title>Vibes | Groups</title>
+	</head>
+	<body>
+		<div class="header">
+			<div class="nav-bar">
+						<div class="logo">
+							<!-- image logog here -->
+								<!-- <img src="{% static 'business/img/vibes.jpg' %}" alt="logo"> -->
+								<img src="vibes.jpg" alt="Logo">
+						</div>
+						<a href="{% url 'profile:profile' %}">
+							<span class="fa fa-home"></span>
+
+						</a>
+
+						<a href="#">
+							<span class="fa fa-shopping-basket"></span>
+
+						</a>
+
+						<a href="#" class="hide-small">
+							<span class="fa fa-line-chart"></span>
+
+						</a>
+
+						<a href="#" class="hide-small">
+							<span class="fa fa-pencil"></span>
+
+						</a>
+						<a href="{% url 'discover:discover' %}" class="hide-small">
+							<span class="fa fa-map-marker map"></span>
+
+						</a>
+
+
+						<a href="{% url 'business:business' %}">
+							<span class="fa fa-business-time"></span>
+
+						</a>
+
+						<a href="{% url 'notifications:notifications' %}">
+							<span class="fa fa-bell"></span>
+
+						</a>
+
+						<a href="#" class="hide-small">
+							<span class="fa fa-calculator"></span>
+
+						</a>
+
+			</div>
+
+		</div>
+
+		<div class="container-fluid">
+			<div class="row group-header">
+			</div>
+			<div class="row">
+				<div class="col-xm-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 alldivs users">
+					<div class="div-nav">
+						<input type="text" name="search" value="" autocomplete="on" autofocus placeholder="Search">
+						<label class="upper-label">My Networks</label>
+					</div>
+					<!-- start of loop -->
+					{% for userfol in users %}
+					<div class="user">
+						<label>{{userfol.user_follower.username}}</label>
+						<img src="/media/{{userfol.user_follower.profilepic}}" alt="image">
+						<p>{{userfol.user_follower.location}}</p>
+						<p><button type="button" name="button"><a href="{% url 'messaging:messaging' 1 %}">Chat</a> </button></p>
+
+						</div>
+					{% endfor %}
+					<!-- end of loop -->
+
+				</div>
+
+				<div class="col-xm-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 alldivs">
+
+					<div class="col-xm-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 div-nav">
+						<label class="upper-label">Recent Topics</label>
+					</div>
+					<!-- Start of loop -->
+					{% for groupinfodata in recent_tops_groups %}
+							<div class="recentuser">
+								<label>Name</label>
+							<div class="row">
+								<div class="col-xm-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 img">
+										<img src="/media/{{groupinfodata.group_icon}}" alt="image">
+								</div>
+								<div class="moreuserdata col-sm-12 col-md-7 col-lg-7 col-xl-7 col-xm-12">
+										{{groupinfodata|group_get_latest}}
+										<button type="button" name="button">
+											<a href="{% url 'groups:group_viewer' groupinfodata.id %}">Comment</a>
+										</button>
+								</div>
+							</div>
+							</div>
+							{% endfor %}
+					<!-- end of loop -->
+				</div>
+				<div class="col-xm-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 alldivs groups">
+						<!-- Start of loop -->
+						<label class="upper-label">Groups</label>
+						<form class="" action="{% url 'groups:creategroup' %}" method="post">
+									{% csrf_token %}
+									<div class="div-nav">
+										<input type="search" name="search" autocomplete="on" autofocus placeholder="Search" id="groups">
+									</div>
+						</form>
+						<button type="button" name="button" class="creategroup">
+							<a href="{% url 'groups:creategroup' %}"> Create Group</a>
+						</button>
+						{% for g in Group %}
+
+						<div class="">
+							<div class="recentuser">
+								<label>{{g.group_name}}</label>
+							<div class="row">
+
+								<div class="col-xm-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 imgg">
+										<img src="/media/{{g.group_icon}}" alt="image">
+								</div>
+
+								<div class="moreuserdata col-sm-12 col-md-7 col-lg-7 col-xl-7 col-xm-12">
+									<strong>{{g.group_description}}</strong>
+									<br>
+										{{g.group_location}}
+										{{g.data.Group_member}}
+
+										{% if g.members_set.all|control:current %}
+											<button type="button" name="button"><a href="{% url 'groups:group_viewer' g.id %}">View</a> </button>
+										{% else %}
+
+											<button type="button" name="button"><a href="{% url 'groups:join_group' g.id %}">Join</a> </button>
+
+										{% endif %}
+								</div>
+
+							</div>
+							</div>
+
+						</div>
+
+						{% endfor %}
+
+						<!-- Stop loop -->
+
+						<div class="row">
+
+							<div class="col-xm-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 viewmore">
+									<a href="#">View more</a>
+							</div>
+				</div>
+			</div>
+			</div>
+
+		</div>
+		<script type="text/javascript">
+// 		window.addEventListener('beforeunload', function (e) {
+//     e.preventDefault();
+//     e.returnValue = '';
+// });
+		</script>
+	</body>
+</html>
